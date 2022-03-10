@@ -3,6 +3,18 @@ print("Hello, world!")
 안녕하세요! 하이젠베르크의먐먐미라고 해요!<br>
 파이썬과 C를 다루고, 코틀린을 배우고 있어요!
 
+dev_env.toMap()
+---------
+- OS : Windows 11
+- 텍스트 에디터
+  - Visual Studio Code
+  - vim
+- IDE
+  - PyCharm Professional
+  - IntelliJ IDEA Ultimate
+  - CLion
+  - 기타 JetBrains IDE~~사랑해요 JetBrains~~
+
 me.contact.toDict()
 ----------
 저는 이런 곳으로 연락을 받을 수 있어요.
