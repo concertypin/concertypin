@@ -14,7 +14,7 @@
   - IntelliJ IDEA Ultimate
   - CLion
   - 기타 JetBrains IDE~~사랑해요 JetBrains~~
-- [xonsh](https://github.com/xonsh/xonsh)
+- [xonsh](https://github.com/xonsh/xonsh)와 Windows Terminal
 
 연락처
 ----------
