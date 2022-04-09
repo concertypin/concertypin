@@ -1,6 +1,6 @@
 아아아아안녕하신죠!
 ----------
-안녕하세요! 하이젠베르크의먐먐미라고 해요!<br>
+안녕하세요! 콘서티라고 해요!<br>
 파이썬과 C를 다루고, 코틀린을 배우고 있어요!
 
 개발환경과 언어
@@ -26,7 +26,7 @@
 프로젝트들!
 ---------
 저는 이러한 프로젝트들을 진행했어요.
-- [twitch_utils](https://github.com/heisenberg-cat/twitch-utils)
+- [twitch_utils](https://github.com/concertypin/twitch-utils)
   - 파이썬용 트위치 API wrapper에요. 필요할 때마다 살짝씩 만들어 쓰고 있어요.
-- [Disclass](https://github.com/heisenberg-cat/Disclass)
+- [Disclass](https://github.com/concertypin/Disclass)
   - Discord를 프론트엔드로 하는 일종의 Google Classroom 백엔드에요.
