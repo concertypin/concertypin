@@ -198,7 +198,7 @@
             </label>
         </div>
 
-        <button onclick="import('./tailscale.js').then(i=>i.generateSync())" id="generate">
+        <button onclick="import('./src/tailscale/tailscale.js').then(i=>i.generateSync())" id="generate">
             Auth Key 생성 및 스크립트 만들기
         </button>
         <p id="statusMessage"></p>
@@ -212,9 +212,9 @@
         </div>
 
         <div class="footer">
-            <p>
-                이 웹사이트는 단일 HTML 파일로 만들어졌어요. 모든 기능은 브라우저에서 동작해! ✨
-            </p>
+            <a href="https://github.com/concertypin/concertypin/blob/page/tailscale.html">
+                    <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
+                </a>
         </div>
     </div>
 
