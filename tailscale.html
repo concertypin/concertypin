@@ -1,328 +1,225 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Tailscale 설치 스크립트 생성기</title>
-        <style>
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                background-color: #f0f4f8;
-                color: #333;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
-                padding: 20px;
-            }
 
-            .container {
-                background-color: #fff;
-                padding: 40px;
-                border-radius: 12px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                width: 100%;
-                max-width: 600px;
-                text-align: center;
-            }
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tailscale 설치 스크립트 생성기</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-            h1 {
-                color: #007bff;
-                margin-bottom: 20px;
-                font-size: 2em;
-            }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
 
-            p {
-                color: #666;
-                margin-bottom: 25px;
-                line-height: 1.6;
-            }
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
 
-            .input-group {
-                margin-bottom: 25px;
-                text-align: left;
-            }
+        p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
 
-            .input-group label {
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #555;
-            }
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
 
-            .input-group input {
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 1em;
-                transition: border-color 0.3s;
-                box-sizing: border-box;
-            }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
 
-            .input-group input:focus {
-                outline: none;
-                border-color: #007bff;
-            }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
 
-            button {
-                width: 100%;
-                padding: 15px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                border-radius: 8px;
-                font-size: 1.1em;
-                font-weight: bold;
-                cursor: pointer;
-                transition: background-color 0.3s, transform 0.1s;
-            }
+        .input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
 
-            button:hover {
-                background-color: #0056b3;
-            }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
 
-            button:active {
-                transform: scale(0.98);
-            }
+        button:hover {
+            background-color: #0056b3;
+        }
 
-            button:disabled {
-                background-color: #ccc;
-                cursor: not-allowed;
-            }
+        button:active {
+            transform: scale(0.98);
+        }
 
-            .output-group {
-                margin-top: 30px;
-                text-align: left;
-            }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
-            .output-group label {
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #555;
-            }
+        .output-group {
+            margin-top: 30px;
+            text-align: left;
+        }
 
-            pre {
-                background-color: #e9ecef;
-                color: #000;
-                padding: 15px;
-                border-radius: 8px;
-                overflow-x: auto;
-                white-space: pre-wrap;
-                word-wrap: break-word;
-                font-size: 0.9em;
-                line-height: 1.5;
-                position: relative;
-            }
+        .output-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
 
-            .copy-button {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                padding: 8px 12px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 0.8em;
-                transition: background-color 0.3s, transform 0.1s;
-            }
+        pre {
+            background-color: #e9ecef;
+            color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9em;
+            line-height: 1.5;
+            position: relative;
+        }
 
-            .copy-button:hover {
-                background-color: #0056b3;
-            }
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.3s, transform 0.1s;
+        }
 
-            .copy-button:active {
-                transform: scale(0.98);
-            }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
 
-            .copy-button:disabled {
-                background-color: #ccc;
-                cursor: not-allowed;
-            }
+        .copy-button:active {
+            transform: scale(0.98);
+        }
 
-            .footer {
-                margin-top: 30px;
-                font-size: 0.85em;
-                color: #999;
-            }
+        .copy-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
-            #statusMessage {
-                margin-top: 15px;
-                font-weight: bold;
-            }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: #999;
+        }
 
-            .success {
-                color: #28a745;
-            }
+        #statusMessage {
+            margin-top: 15px;
+            font-weight: bold;
+        }
 
-            .error {
-                color: #dc3545;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Tailscale 설치 스크립트 생성기 🛠️</h1>
-            <p>
-                OAuth 클라이언트 정보와 CORS 프록시를 입력하고 스크립트를 만들어 봐! ✨
-            </p>
+        .success {
+            color: #28a745;
+        }
 
-            <div class="input-group">
-                <label for="clientId">OAuth 클라이언트 ID:</label>
-                <input type="text" id="clientId" placeholder="ts-oauth-client-..." />
-            </div>
-            <div class="input-group">
-                <label for="clientSecret">OAuth 클라이언트 시크릿:</label>
-                <input type="password" id="clientSecret" placeholder="ts-oauth-secret-..." />
-            </div>
-            <div class="input-group">
-                <label for="corsProxy">CORS 프록시 URL:</label>
-                <input type="text" id="corsProxy" placeholder="https://corsproxy.example.com" />
-            </div>
+        .error {
+            color: #dc3545;
+        }
+    </style>
 
-            <button onclick="generateAuthKeyAndScript()">
-                Auth Key 생성 및 스크립트 만들기
-            </button>
-            <p id="statusMessage"></p>
 
-            <div class="output-group">
-                <label for="scriptOutput">설치 스크립트:</label>
-                <pre id="scriptOutput">Auth Key를 생성하면 여기에 스크립트가 나타날 거야! 🚀</pre>
-                <button class="copy-button" onclick="copyScript()" id="copyButton" disabled>
-                    복사하기
-                </button>
-            </div>
+</head>
 
-            <div class="footer">
-                <p>
-                    이 웹사이트는 단일 HTML 파일로 만들어졌어요. 모든 기능은 브라우저에서 동작해! ✨
-                </p>
-            </div>
+<body>
+    <div class="container">
+        <h1>Tailscale 설치 스크립트 생성기 🛠️</h1>
+        <p>
+            OAuth 클라이언트 정보와 CORS 프록시를 입력하고 스크립트를 만들어 봐! ✨
+        </p>
+
+        <div class="input-group">
+            <label for="clientId">OAuth 클라이언트 ID:</label>
+            <input type="text" id="clientId" placeholder="ts-oauth-client-..." />
+        </div>
+        <div class="input-group">
+            <label for="clientSecret">OAuth 클라이언트 시크릿:</label>
+            <input type="password" id="clientSecret" placeholder="ts-oauth-secret-..." />
+        </div>
+        <div class="input-group">
+            <label for="tailnetName">Tailnet 이름:</label>
+            <input type="text" id="tailnetName" placeholder="예: my-tailnet.com">
+        </div>
+        <div class="input-group">
+            <label for="corsProxy">CORS 프록시 URL:</label>
+            <input type="text" id="corsProxy" placeholder="https://corsproxy.example.com" />
+        </div>
+        <div class="input-group">
+            <label>
+                <input type="checkbox" id="isEphemeral" checked>
+                Ephemeral (일회용) Auth Key 사용하기
+            </label>
         </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const params = new URLSearchParams(window.location.search);
-                if (params.get('clientId')) {
-                    document.getElementById('clientId').value = params.get('clientId');
-                }
-                if (params.get('clientSecret')) {
-                    document.getElementById('clientSecret').value = params.get('clientSecret');
-                }
-                if (params.get('corsProxy')) {
-                    document.getElementById('corsProxy').value = params.get('corsProxy');
-                }
-            });
+        <button onclick="import('./tailscale.js').then(i=>i.generateSync())" id="generate">
+            Auth Key 생성 및 스크립트 만들기
+        </button>
+        <p id="statusMessage"></p>
 
-            async function generateAuthKeyAndScript() {
-                const clientId = document.getElementById('clientId').value.trim();
-                const clientSecret = document.getElementById('clientSecret').value.trim();
-                const corsProxy = document.getElementById('corsProxy').value.trim();
-                const statusMessage = document.getElementById('statusMessage');
-                const scriptOutput = document.getElementById('scriptOutput');
-                const copyButton = document.getElementById('copyButton');
+        <div class="output-group">
+            <label for="scriptOutput">설치 스크립트:</label>
+            <pre id="scriptOutput">Auth Key를 생성하면 여기에 스크립트가 나타날 거야! 🚀</pre>
+            <button class="copy-button" onclick="copyScript()" id="copyButton" disabled>
+                복사하기
+            </button>
+        </div>
 
-                statusMessage.textContent = '';
-                scriptOutput.textContent = 'API 액세스 토큰을 받는 중... ⏳';
-                copyButton.disabled = true;
+        <div class="footer">
+            <p>
+                이 웹사이트는 단일 HTML 파일로 만들어졌어요. 모든 기능은 브라우저에서 동작해! ✨
+            </p>
+        </div>
+    </div>
 
-                if (!clientId || !clientSecret || !corsProxy) {
-                    statusMessage.textContent = '모든 필드를 입력해 주세요! 😠';
-                    statusMessage.className = 'error';
-                    scriptOutput.textContent = 'Auth Key를 생성하면 여기에 스크립트가 나타날 거야! 🚀';
-                    return;
-                }
+    <script type="module" src="./src/tailscale/tailscale.js"></script><!--Module script is defer by default lol-->
 
-                const accessTokenEndpoint = `https://api.tailscale.com/api/v2/oauth/token`;
-                const accessTokenProxyUrl = `${corsProxy}?url=${encodeURIComponent(accessTokenEndpoint)}`;
+</body>
 
-
-                    // Step 1: OAuth 토큰 요청
-                    const tokenResponse = await fetch(accessTokenProxyUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: new URLSearchParams({
-                            grant_type: 'client_credentials',
-                            client_id: clientId,
-                            client_secret: clientSecret,
-                            // auth_keys를 만들기 위한 스코프와 태그를 명시
-                            scope: 'auth_keys',
-                            tags: 'tag:unmanaged'
-                        })
-                    });
-
-                    if (!tokenResponse.ok) {
-                        const errorText = await tokenResponse.text();
-                        throw new Error(`액세스 토큰 오류: ${tokenResponse.status} - ${errorText}`);
-                    }
-
-                    const tokenData = await tokenResponse.json();
-                    const accessToken = tokenData.access_token;
-
-                    statusMessage.textContent = 'API 액세스 토큰을 받았어! 이제 Auth Key를 생성할게... ✨';
-                    scriptOutput.textContent = 'Auth Key를 생성하는 중... ⏳';
-
-                    const apiEndpoint = `https://api.tailscale.com/api/v2/tailnet/oauth/keys`;
-                    const proxyUrl = `${corsProxy}?url=${encodeURIComponent(apiEndpoint)}`;
-                    const authHeader = `Bearer ${accessToken}`;
-                    const body = {
-                        capabilities: {
-                            devices: {
-                                create: {
-                                    reusable: false,
-                                    ephemeral: true,
-                                    tags: ["tag:ephemeral"],
-                                },
-                            },
-                        },
-                        expirySeconds: 1 *24*60*60 //1 day
-                    };
-                        const response = await fetch(proxyUrl, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: authHeader,
-                            },
-                            body: JSON.stringify(body),
-                        });
-
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            throw new Error(`API 오류: ${response.status} - ${errorText}`);
-                        }
-
-                        const data = await response.json();
-                        const authKey = data.key;
-
-                        const script = `curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --advertise-exit-node --hostname=vast --ssh ${authKey}`;
-
-                        scriptOutput.textContent = script;
-                        statusMessage.textContent = "Auth Key 생성 및 스크립트 작성이 완료되었어! 🎉";
-                        statusMessage.className = "success";
-                        copyButton.disabled = false;
-
-                function copyScript() {
-                    const scriptOutput = document.getElementById("scriptOutput");
-                    navigator.clipboard
-                        .writeText(scriptOutput.textContent)
-                        .then(() => {
-                            const originalText = document.getElementById("copyButton").textContent;
-                            document.getElementById("copyButton").textContent = "복사 완료! ✅";
-                            setTimeout(() => {
-                                document.getElementById("copyButton").textContent = originalText;
-                            }, 2000);
-                        })
-                        .catch((err) => {
-                            console.error("복사 실패:", err);
-                            alert("복사에 실패했어요! 😭");
-                        });
-                }
-        </script>
-    </body>
 </html>
