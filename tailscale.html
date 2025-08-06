@@ -167,7 +167,9 @@
     <body>
         <div class="container">
             <h1>Tailscale 설치 스크립트 생성기 🛠️</h1>
-            <p>OAuth 클라이언트 정보와 CORS 프록시를 입력하고 스크립트를 만들어 봐! ✨</p>
+            <p>
+                OAuth 클라이언트 정보와 CORS 프록시를 입력하고 스크립트를 만들어 봐! ✨
+            </p>
 
             <div class="input-group">
                 <label for="clientId">OAuth 클라이언트 ID:</label>
@@ -182,147 +184,145 @@
                 <input type="text" id="corsProxy" placeholder="https://corsproxy.example.com" />
             </div>
 
-            <button onclick="generateAuthKeyAndScript()">Auth Key 생성 및 스크립트 만들기</button>
+            <button onclick="generateAuthKeyAndScript()">
+                Auth Key 생성 및 스크립트 만들기
+            </button>
             <p id="statusMessage"></p>
 
             <div class="output-group">
                 <label for="scriptOutput">설치 스크립트:</label>
                 <pre id="scriptOutput">Auth Key를 생성하면 여기에 스크립트가 나타날 거야! 🚀</pre>
-                <button class="copy-button" onclick="copyScript()" id="copyButton" disabled>복사하기</button>
+                <button class="copy-button" onclick="copyScript()" id="copyButton" disabled>
+                    복사하기
+                </button>
             </div>
 
             <div class="footer">
-                <p>이 웹사이트는 단일 HTML 파일로 만들어졌어요. 모든 기능은 브라우저에서 동작해! ✨</p>
+                <p>
+                    이 웹사이트는 단일 HTML 파일로 만들어졌어요. 모든 기능은 브라우저에서 동작해! ✨
+                </p>
             </div>
         </div>
 
         <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('clientId')) {
-                document.getElementById('clientId').value = params.get('clientId');
-            }
-            if (params.get('clientSecret')) {
-                document.getElementById('clientSecret').value = params.get('clientSecret');
-            }
-            if (params.get('corsProxy')) {
-                document.getElementById('corsProxy').value = params.get('corsProxy');
-            }
-        });
+            document.addEventListener('DOMContentLoaded', () => {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('clientId')) {
+                    document.getElementById('clientId').value = params.get('clientId');
+                }
+                if (params.get('clientSecret')) {
+                    document.getElementById('clientSecret').value = params.get('clientSecret');
+                }
+                if (params.get('corsProxy')) {
+                    document.getElementById('corsProxy').value = params.get('corsProxy');
+                }
+            });
 
-        async function generateAuthKeyAndScript() {
-            const clientId = document.getElementById('clientId').value.trim();
-            const clientSecret = document.getElementById('clientSecret').value.trim();
-            const corsProxy = document.getElementById('corsProxy').value.trim();
-            const statusMessage = document.getElementById('statusMessage');
-            const scriptOutput = document.getElementById('scriptOutput');
-            const copyButton = document.getElementById('copyButton');
+            async function generateAuthKeyAndScript() {
+                const clientId = document.getElementById('clientId').value.trim();
+                const clientSecret = document.getElementById('clientSecret').value.trim();
+                const corsProxy = document.getElementById('corsProxy').value.trim();
+                const statusMessage = document.getElementById('statusMessage');
+                const scriptOutput = document.getElementById('scriptOutput');
+                const copyButton = document.getElementById('copyButton');
 
-            statusMessage.textContent = '';
-            scriptOutput.textContent = 'API 액세스 토큰을 받는 중... ⏳';
-            copyButton.disabled = true;
+                statusMessage.textContent = '';
+                scriptOutput.textContent = 'API 액세스 토큰을 받는 중... ⏳';
+                copyButton.disabled = true;
 
-            if (!clientId || !clientSecret || !corsProxy) {
-                statusMessage.textContent = '모든 필드를 입력해 주세요! 😠';
-                statusMessage.className = 'error';
-                scriptOutput.textContent = 'Auth Key를 생성하면 여기에 스크립트가 나타날 거야! 🚀';
-                return;
-            }
-
-            const accessTokenEndpoint = `https://api.tailscale.com/api/v2/oauth/token`;
-            const accessTokenProxyUrl = `${corsProxy}${encodeURIComponent(accessTokenEndpoint)}`;
-
-            try {
-                // Step 1: OAuth 토큰 요청
-                const tokenResponse = await fetch(accessTokenProxyUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({
-                        grant_type: 'client_credentials',
-                        client_id: clientId,
-                        client_secret: clientSecret,
-                        // auth_keys를 만들기 위한 스코프와 태그를 명시
-                        scope: 'auth_keys',
-                        tags: 'tag:unmanaged'
-                    })
-                });
-
-                if (!tokenResponse.ok) {
-                    const errorText = await tokenResponse.text();
-                    throw new Error(`액세스 토큰 오류: ${tokenResponse.status} - ${errorText}`);
+                if (!clientId || !clientSecret || !corsProxy) {
+                    statusMessage.textContent = '모든 필드를 입력해 주세요! 😠';
+                    statusMessage.className = 'error';
+                    scriptOutput.textContent = 'Auth Key를 생성하면 여기에 스크립트가 나타날 거야! 🚀';
+                    return;
                 }
 
-                const tokenData = await tokenResponse.json();
-                const accessToken = tokenData.access_token;
-                
-                statusMessage.textContent = 'API 액세스 토큰을 받았어! 이제 Auth Key를 생성할게... ✨';
-                scriptOutput.textContent = 'Auth Key를 생성하는 중... ⏳';
+                const accessTokenEndpoint = `https://api.tailscale.com/api/v2/oauth/token`;
+                const accessTokenProxyUrl = `${corsProxy}?url=${encodeURIComponent(accessTokenEndpoint)}`;
 
-                const apiEndpoint = `https://api.tailscale.com/api/v2/tailnet/oauth/keys`;
-                const proxyUrl = `${corsProxy}?url=${encodeURIComponent(apiEndpoint)}`;
-                const authHeader = `Bearer ${accessToken}`;
-                const body = {
-                    capabilities: {
-                        devices: {
-                            create: {
-                                reusable: false,
-                                ephemeral: true,
-                                tags: ["tag:ephemeral"],
-                            },
-                        },
-                    },
-                    expirySeconds: 1 *24*60*60 //1 day
-                };
-                try {
-                    const response = await fetch(proxyUrl, {
-                        method: "POST",
+
+                    // Step 1: OAuth 토큰 요청
+                    const tokenResponse = await fetch(accessTokenProxyUrl, {
+                        method: 'POST',
                         headers: {
-                            "Content-Type": "application/json",
-                            Authorization: authHeader,
+                            'Content-Type': 'application/x-www-form-urlencoded'
                         },
-                        body: JSON.stringify(body),
+                        body: new URLSearchParams({
+                            grant_type: 'client_credentials',
+                            client_id: clientId,
+                            client_secret: clientSecret,
+                            // auth_keys를 만들기 위한 스코프와 태그를 명시
+                            scope: 'auth_keys',
+                            tags: 'tag:unmanaged'
+                        })
                     });
 
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`API 오류: ${response.status} - ${errorText}`);
+                    if (!tokenResponse.ok) {
+                        const errorText = await tokenResponse.text();
+                        throw new Error(`액세스 토큰 오류: ${tokenResponse.status} - ${errorText}`);
                     }
 
-                    const data = await response.json();
-                    const authKey = data.key;
+                    const tokenData = await tokenResponse.json();
+                    const accessToken = tokenData.access_token;
 
-                    const script = `curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --advertise-exit-node --hostname=vast --ssh ${authKey}`;
+                    statusMessage.textContent = 'API 액세스 토큰을 받았어! 이제 Auth Key를 생성할게... ✨';
+                    scriptOutput.textContent = 'Auth Key를 생성하는 중... ⏳';
 
-                    scriptOutput.textContent = script;
-                    statusMessage.textContent = "Auth Key 생성 및 스크립트 작성이 완료되었어! 🎉";
-                    statusMessage.className = "success";
-                    copyButton.disabled = false;
-                } catch (error) {
-                    statusMessage.textContent = `오류 발생: ${error.message}. 클라이언트 정보나 CORS 프록시 URL을 확인해 줘! 😭`;
-                    statusMessage.className = "error";
-                    scriptOutput.textContent = "Auth Key를 생성하면 여기에 스크립트가 나타날 거야! 🚀";
-                    console.error(error);
+                    const apiEndpoint = `https://api.tailscale.com/api/v2/tailnet/oauth/keys`;
+                    const proxyUrl = `${corsProxy}?url=${encodeURIComponent(apiEndpoint)}`;
+                    const authHeader = `Bearer ${accessToken}`;
+                    const body = {
+                        capabilities: {
+                            devices: {
+                                create: {
+                                    reusable: false,
+                                    ephemeral: true,
+                                    tags: ["tag:ephemeral"],
+                                },
+                            },
+                        },
+                        expirySeconds: 1 *24*60*60 //1 day
+                    };
+                        const response = await fetch(proxyUrl, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: authHeader,
+                            },
+                            body: JSON.stringify(body),
+                        });
+
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            throw new Error(`API 오류: ${response.status} - ${errorText}`);
+                        }
+
+                        const data = await response.json();
+                        const authKey = data.key;
+
+                        const script = `curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --advertise-exit-node --hostname=vast --ssh ${authKey}`;
+
+                        scriptOutput.textContent = script;
+                        statusMessage.textContent = "Auth Key 생성 및 스크립트 작성이 완료되었어! 🎉";
+                        statusMessage.className = "success";
+                        copyButton.disabled = false;
+
+                function copyScript() {
+                    const scriptOutput = document.getElementById("scriptOutput");
+                    navigator.clipboard
+                        .writeText(scriptOutput.textContent)
+                        .then(() => {
+                            const originalText = document.getElementById("copyButton").textContent;
+                            document.getElementById("copyButton").textContent = "복사 완료! ✅";
+                            setTimeout(() => {
+                                document.getElementById("copyButton").textContent = originalText;
+                            }, 2000);
+                        })
+                        .catch((err) => {
+                            console.error("복사 실패:", err);
+                            alert("복사에 실패했어요! 😭");
+                        });
                 }
-            }
-
-            function copyScript() {
-                const scriptOutput = document.getElementById("scriptOutput");
-                navigator.clipboard
-                    .writeText(scriptOutput.textContent)
-                    .then(() => {
-                        const originalText = document.getElementById("copyButton").textContent;
-                        document.getElementById("copyButton").textContent = "복사 완료! ✅";
-                        setTimeout(() => {
-                            document.getElementById("copyButton").textContent = originalText;
-                        }, 2000);
-                    })
-                    .catch((err) => {
-                        console.error("복사 실패:", err);
-                        alert("복사에 실패했어요! 😭");
-                    });
-            }
         </script>
     </body>
 </html>
