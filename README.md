@@ -1,8 +1,8 @@
 # 👋 안녕하세요! (👋 Howdy!)
 
 <p align="center">
-  안녕하세요! 👋 한국에 사는 주니어 개발자 <strong>concertypin</strong>입니다. <br />
-  <em>Hello! 👋 I'm <strong>concertypin</strong>, a junior developer based in South Korea.</em>
+  안녕하세요! 👋 한국에 사는 대학생 <strong>concertypin</strong>입니다. <br />
+  <em>Hello! 👋 I'm <strong>concertypin</strong>, an university student based in South Korea.</em>
   <br /><br />
   새로운 기술을 배우고, 그것으로 무언가를 만드는 것을 정말 좋아합니다! 💻✨ <br />
   <em>I truly enjoy learning new technologies and creating things with them! 💻✨</em>
