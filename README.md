@@ -55,5 +55,5 @@
   <img src="https://github-readme-stats.vercel.app/api?username=concertypin&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&bg_color=1a1b27" alt="Certy's GitHub Stats" />
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=concertypin&layout=compact&theme=tokyonight&hide_border=true&bg_color=1a1b27" alt="Certy's Top Languages" />
   <br/>
-  <img src="https://github-profile-trophy.vercel.app/?username=concertypin&theme=tokyonight&no-frame=true&column=7" alt="Certy's GitHub Trophies" />
+  <img src="https://trophygh.kolioaris.xyz/?username=concertypin&theme=tokyonight&no-frame=true&column=7" alt="Certy's GitHub Trophies" />
 </p>
