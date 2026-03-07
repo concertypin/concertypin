@@ -52,8 +52,8 @@
 ### 📊 저의 GitHub 활동 기록 (My GitHub Stats) 📊
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=concertypin&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&bg_color=1a1b27" alt="Certy's GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=concertypin&layout=compact&theme=tokyonight&hide_border=true&bg_color=1a1b27" alt="Certy's Top Languages" />
+  <img src="https://github-readme-stats-one-psi-26.vercel.app/api?username=concertypin&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&bg_color=1a1b27" alt="Certy's GitHub Stats" />
+  <img src="https://github-readme-stats-one-psi-26.vercel.app/api/top-langs/?username=concertypin&layout=compact&theme=tokyonight&hide_border=true&bg_color=1a1b27" alt="Certy's Top Languages" />
   <br/>
   <img src="https://trophygh.kolioaris.xyz/?username=concertypin&theme=tokyonight&no-frame=true&column=7" alt="Certy's GitHub Trophies" />
 </p>
